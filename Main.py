@@ -4,7 +4,6 @@ import oracledb
 
 app = FastAPI()
 
-
 db_user = 'RM560508'
 db_password = '050897'
 db_host = 'oracle.fiap.com.br'
@@ -31,8 +30,6 @@ def createTarefa(cd_tipo_tarefa, ds_tarefas):
         print(e)
         #raise HTTPException(status_code=500, detail=str(e))
         return {'id_tarefa': -1}
-
-
 
 #@app.put insert
 #@app.get select
