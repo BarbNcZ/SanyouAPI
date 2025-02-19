@@ -1,12 +1,16 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 import oracledb
+from dotenv import load_dotenv
+import os
 
 app = FastAPI()
 
-db_user = 'RM560508'
-db_password = '050897'
-db_host = 'oracle.fiap.com.br'
+load_dotenv()  # Load variables from .env
+
+db_host = os.getenv("DB_HOST")
+db_user = os.getenv("DB_USER")
+db_password = os.getenv("DB_PASSWORD")
 
 try:
     connection = oracledb.connect(user=db_user, password=db_password, host=db_host, sid='orcl')
@@ -30,6 +34,8 @@ def createTarefa(cd_tipo_tarefa, ds_tarefas):
         print(e)
         #raise HTTPException(status_code=500, detail=str(e))
         return {'id_tarefa': -1}
+
+
 
 #@app.put insert
 #@app.get select
