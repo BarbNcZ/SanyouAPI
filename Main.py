@@ -28,13 +28,8 @@ def getCursorAndConnection():
 
 #crud
 
-
-class DeleteTarefaRequest(BaseModel):
-    cd_tarefas: int
-
-
-@app.post('/deletetarefa')
-def deleteTarefa(request: DeleteTarefaRequest):
+@app.delete('/deletetarefa/{cd_tarefas}')
+def deleteTarefa(cd_tarefas):
     cursorAndConnection = getCursorAndConnection()
     cursor = cursorAndConnection[0]
     connection = cursorAndConnection[1]
@@ -44,7 +39,7 @@ def deleteTarefa(request: DeleteTarefaRequest):
     try:
         print('Deleting Tarefa')
 
-        cursor.execute("DELETE FROM TAREFA WHERE CD_TAREFAS = :cd_tarefas", {'cd_tarefas': request.cd_tarefas})
+        cursor.execute("DELETE FROM TAREFAS WHERE CD_TAREFAS = :cd_tarefas", {'cd_tarefas': cd_tarefas})
 
         if cursor.rowcount != 0:
             result = True
@@ -126,7 +121,7 @@ def getTipoTarefa():
 
 
 
-@app.get('/achartarefas')
+@app.get('/tarefas')
 def getTarefas():
     cursorAndConnection = getCursorAndConnection()
     cursor = cursorAndConnection[0]
