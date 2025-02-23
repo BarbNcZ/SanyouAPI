@@ -12,7 +12,6 @@ db_host = os.getenv("DB_HOST")
 db_user = os.getenv("DB_USER")
 db_password = os.getenv("DB_PASSWORD")
 
-
 def getCursorAndConnection():
     try:
         print(f"Connecting to DB... Host: {db_host}, User: {db_user}")
@@ -25,8 +24,7 @@ def getCursorAndConnection():
         print('Error connecting to db', e)
         return None
 
-
-#crud
+# crud
 
 @app.delete('/deletetarefa/{cd_tarefas}')
 def deleteTarefa(cd_tarefas):
@@ -61,8 +59,6 @@ def deleteTarefa(cd_tarefas):
         return {'result': False}
 
 
-
-
 @app.put('/createtarefa/{cd_tipo_tarefa}/{ds_tarefas}')
 def createTarefa(cd_tipo_tarefa, ds_tarefas):
     cursorAndConnection = getCursorAndConnection()
@@ -70,7 +66,8 @@ def createTarefa(cd_tipo_tarefa, ds_tarefas):
     connection = cursorAndConnection[1]
     try:
         print('Creating Tarefa')
-        cursor.execute("INSERT INTO TAREFAS (CD_TIPO_TAREFA, DS_TAREFAS) VALUES (:cd_tipo_tarefa, :ds_tarefas)",{'cd_tipo_tarefa': cd_tipo_tarefa, 'ds_tarefas': ds_tarefas})
+        cursor.execute("INSERT INTO TAREFAS (CD_TIPO_TAREFA, DS_TAREFAS) VALUES (:cd_tipo_tarefa, :ds_tarefas)",
+                       {'cd_tipo_tarefa': cd_tipo_tarefa, 'ds_tarefas': ds_tarefas})
         cursor.execute('SELECT SEQ_TAREFAS.CURRVAL FROM DUAL')
         id_tarefa = cursor.fetchone()[0]
         connection.commit()
@@ -78,16 +75,15 @@ def createTarefa(cd_tipo_tarefa, ds_tarefas):
         cursor.close()
         connection.close()
 
-        return { 'id_tarefa': id_tarefa }
+        return {'id_tarefa': id_tarefa}
     except Exception as e:
         print(e)
-        #raise HTTPException(status_code=500, detail=str(e))
+        # raise HTTPException(status_code=500, detail=str(e))
 
         cursor.close()
         connection.close()
 
         return {'id_tarefa': -1}
-
 
 
 @app.get('/tipotarefa')
@@ -109,16 +105,15 @@ def getTipoTarefa():
         cursor.close()
         connection.close()
 
-        return { 'tipo_tarefa' : tipos_tarefa }
+        return {'tipo_tarefa': tipos_tarefa}
     except Exception as e:
         print(e)
-        #raise HTTPException(status_code=500, detail=str(e))
+        # raise HTTPException(status_code=500, detail=str(e))
 
         cursor.close()
         connection.close()
 
         return {'tipo_tarefa': []}
-
 
 
 @app.get('/tarefas')
@@ -140,10 +135,10 @@ def getTarefas():
         cursor.close()
         connection.close()
 
-        return { 'tarefas' : tarefas }
+        return {'tarefas': tarefas}
     except Exception as e:
         print(e)
-        #raise HTTPException(status_code=500, detail=str(e))
+        # raise HTTPException(status_code=500, detail=str(e))
 
         cursor.close()
         connection.close()
@@ -151,10 +146,103 @@ def getTarefas():
         return {'tarefas': []}
 
 
+@app.get('/departamentos')
+def getDepartamento():
+    cursorAndConnection = getCursorAndConnection()
+    cursor = cursorAndConnection[0]
+    connection = cursorAndConnection[1]
+    try:
+        print('Getting Departamentos')
+        cursor.execute("SELECT CD_DEPTO, NM_DEPTO FROM DEPTO")
+        depto = [
+            {
+                'cd_depto': row[0],
+                'nm_depto': row[1]
+            }
+            for row in cursor.fetchall()
+        ]
 
-#@app.get select
-#@app.put insert
-#@app.patch update
-#@app.delete delete
-#@app.post coringa
-#boas praticas do SOLID
+        cursor.close()
+        connection.close()
+
+        return {'depto': depto}
+    except Exception as e:
+        print(e)
+
+        cursor.close()
+        connection.close()
+
+        return {'depto': []}
+
+
+@app.get('/cargo')
+def getCargo():
+    cursorAndConnection = getCursorAndConnection()
+    cursor = cursorAndConnection[0]
+    connection = cursorAndConnection[1]
+    try:
+        print('Getting Cargos')
+        cursor.execute("SELECT CD_CARGO, DS_CARGO FROM CARGO")
+        cargo = [
+            {
+                'cd_cargo': row[0],
+                'ds_cargo': row[1]
+            }
+            for row in cursor.fetchall()
+        ]
+
+        cursor.close()
+        connection.close()
+
+        return {'cargo': cargo}
+    except Exception as e:
+        print(e)
+
+        cursor.close()
+        connection.close()
+
+        return {'cargo': []}
+
+
+@app.put('/createfuncionario/{cd_depto}/{cd_cargo}/{ds_email}/{nm_funcionario}')
+def createFuncionario(cd_depto, cd_cargo, ds_email, nm_funcionario):
+    cursorAndConnection = getCursorAndConnection()
+    cursor = cursorAndConnection[0]
+    connection = cursorAndConnection[1]
+    try:
+        print('Creating Funcionario')
+        cursor.execute(
+            "INSERT INTO FUNCIONARIO (" \
+            "cd_depto, cd_cargo, ds_email, nm_funcionario" \
+            ") VALUES (" \
+            ":cd_depto, :cd_cargo, :ds_email, :nm_funcionario" \
+            ")",
+            {
+                'cd_depto': cd_depto,
+                'cd_cargo': cd_cargo,
+                'ds_email': ds_email,
+                'nm_funcionario': nm_funcionario
+            }
+        )
+        cursor.execute('SELECT SEQ_funcionario.CURRVAL FROM DUAL')
+        cd_funcionario = cursor.fetchone()[0]
+        connection.commit()
+
+        cursor.close()
+        connection.close()
+
+        return {'cd_funcionario': cd_funcionario}
+    except Exception as e:
+        print(e)
+
+        cursor.close()
+        connection.close()
+
+        return {'cd_funcionario': -1}
+
+# @app.get select
+# @app.put insert
+# @app.patch update
+# @app.delete delete
+# @app.post coringa
+# boas praticas do SOLID
