@@ -1,6 +1,6 @@
 To execute the server run the following command:
 
-`uvicorn Main:app --reload`
+`uvicorn main:app --reload`
 
 ---
 
@@ -16,3 +16,11 @@ To execute the server run the following command:
 > DB_USER='your_database_user'
 > DB_PASSWORD='your_secure_password'
 > ```
+
+## Folder structure explanation
+
+[Click here](Folders_Structure.md) to read more about the folder structure
+
+## `requirements.txt` file explanation
+
+[Click here](Requirements_File.md) to read more about the `requirements.txt` file
