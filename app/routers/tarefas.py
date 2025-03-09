@@ -100,4 +100,77 @@ def getTarefas():
         cursor.close()
         connection.close()
 
-        return {'tarefas': []}
+        return {'tarefas': []}@router.get('/tarefas')
+
+
+@router.get('/tarefas/{cd_tarefas}')
+def getTarefa(cd_tarefas):
+    cursorAndConnection = getCursorAndConnection()
+    cursor = cursorAndConnection[0]
+    connection = cursorAndConnection[1]
+    try:
+        print('Getting Tarefa')
+        cursor.execute("SELECT tp.DS_TIPO_TAREFA, t.DS_TAREFAS FROM TAREFAS t "
+                       "LEFT OUTER JOIN TIPO_TAREFA tp ON t.cd_tipo_tarefa = tp.cd_tipo_tarefa "
+                       f"WHERE t.CD_TAREFAS = \'{cd_tarefas}\' "
+                       )
+        tarefas = [
+            {
+                'ds_tipo_tarefa': row[0],
+                'ds_tarefas': row[1]
+            }
+            for row in cursor.fetchall()
+        ]
+
+        cursor.close()
+        connection.close()
+
+        if len(tarefas) > 0:
+            return tarefas[0]
+        else:
+            return None
+
+    except Exception as e:
+        print(e)
+        # raise HTTPException(status_code=500, detail=str(e))
+
+        cursor.close()
+        connection.close()
+
+        return None
+
+
+@router.get('/tarefasbyfuncionario/{cd_funcionario}')
+def getTarefasByFuncionario(cd_funcionario):
+    cursorAndConnection = getCursorAndConnection()
+    cursor = cursorAndConnection[0]
+    connection = cursorAndConnection[1]
+    try:
+        print('Getting Tarefa by Funcionario')
+        cursor.execute("SELECT tp.DS_TIPO_TAREFA, t.DS_TAREFAS FROM TAREFAS_FUNC tf "
+                        "LEFT OUTER JOIN FUNCIONARIO f ON f.cd_funcionario = tf.cd_funcionario "
+                        "LEFT OUTER JOIN TAREFAS t ON t.cd_tarefas = tf.cd_tarefas "
+                        "LEFT OUTER JOIN TIPO_TAREFA tp ON t.cd_tipo_tarefa = tp.cd_tipo_tarefa "
+                        f"WHERE f.CD_FUNCIONARIO = \'{cd_funcionario}\' "
+                       )
+        tarefas = [
+            {
+                'ds_tipo_tarefa': row[0],
+                'ds_tarefas': row[1]
+            }
+            for row in cursor.fetchall()
+        ]
+
+        cursor.close()
+        connection.close()
+
+        return {'tarefas': tarefas}
+
+    except Exception as e:
+        print(e)
+        # raise HTTPException(status_code=500, detail=str(e))
+
+        cursor.close()
+        connection.close()
+
+        return{'tarefas': []}

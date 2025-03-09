@@ -4,6 +4,7 @@ from app.routers import tarefas
 from app.routers import tiposTarefa
 from app.routers import departamentos
 from app.routers import cargos
+from app.routers import login
 
 # Core
 app = FastAPI()
@@ -14,6 +15,8 @@ app.include_router(tarefas.router)
 app.include_router(tiposTarefa.router)
 app.include_router(departamentos.router)
 app.include_router(cargos.router)
+
+app.include_router(login.router)
 
 # Main
 if __name__ == "__main__":
