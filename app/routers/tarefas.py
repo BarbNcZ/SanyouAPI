@@ -36,15 +36,15 @@ def deleteTarefa(cd_tarefas):
         return {'result': False}
 
 
-@router.put('/createtarefa/{cd_tipo_tarefa}/{ds_tarefas}/{cd_funcionario}')
-def createTarefa(cd_tipo_tarefa, ds_tarefas, cd_funcionario):
+@router.put('/createtarefa/{cd_tipo_tarefa}/{ds_tarefas}/{cd_funcionario}/{nr_dificuldade}/{nr_tempo}')
+def createTarefa(cd_tipo_tarefa, ds_tarefas, cd_funcionario, nr_dificuldade, nr_tempo):
     cursorAndConnection = getCursorAndConnection()
     cursor = cursorAndConnection[0]
     connection = cursorAndConnection[1]
     try:
         print('Creating Tarefa')
-        cursor.execute("INSERT INTO TAREFAS (CD_TIPO_TAREFA, DS_TAREFAS) VALUES (:cd_tipo_tarefa, :ds_tarefas)",
-                       {'cd_tipo_tarefa': cd_tipo_tarefa, 'ds_tarefas': ds_tarefas})
+        cursor.execute("INSERT INTO TAREFAS (CD_TIPO_TAREFA, DS_TAREFAS, NR_DIFICULDADE, NR_TEMPO) VALUES (:cd_tipo_tarefa, :ds_tarefas, :nr_dificuldade, :nr_tempo)",
+                       {'cd_tipo_tarefa': cd_tipo_tarefa, 'ds_tarefas': ds_tarefas, 'nr_dificuldade': nr_dificuldade, 'nr_tempo': nr_tempo})
         cursor.execute('SELECT SEQ_TAREFAS.CURRVAL FROM DUAL')
         id_tarefa = cursor.fetchone()[0]
         connection.commit()
