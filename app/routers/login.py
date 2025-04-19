@@ -34,7 +34,6 @@ def login(user: User):
                 'nm_funcionario': row[1],
                 'nm_depto': row[2],
                 'ds_cargo': row[3]
-
             }
             for row in cursor.fetchall()
         ]

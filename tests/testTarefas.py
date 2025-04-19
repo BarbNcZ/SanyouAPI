@@ -23,6 +23,7 @@ def testGetTarefas(test_case):
     assert response.status_code == 200
     assert len(response.json()["tarefas"]) > 0
 
+
 @pytest.mark.parametrize("test_case", [
     "when requesting \"/tarefas\" endpoint with GET method and no parameters, "
     "then should response with 200 ok and a json with \"tarefas\" not empty",

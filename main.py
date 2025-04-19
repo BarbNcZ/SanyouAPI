@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routers import funcionarios
+from app.routers import funcionarios, ranking
 from app.routers import tarefas
 from app.routers import tiposTarefa
 from app.routers import departamentos
@@ -11,6 +11,7 @@ app = FastAPI()
 
 # Routes
 app.include_router(funcionarios.router)
+app.include_router(ranking.router)
 app.include_router(tarefas.router)
 app.include_router(tiposTarefa.router)
 app.include_router(departamentos.router)

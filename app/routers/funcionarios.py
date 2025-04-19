@@ -4,7 +4,6 @@ from app.services.database import getCursorAndConnection
 router = APIRouter()
 
 
-
 @router.get('/funcionarios')
 def getFuncionarios():
     cursorAndConnection = getCursorAndConnection()
@@ -42,7 +41,6 @@ def getFuncionarios():
         return {'funcionario': []}
 
 
-
 @router.put('/createfuncionario/{cd_depto}/{cd_cargo}/{ds_email}/{nm_funcionario}')
 def createFuncionario(cd_depto, cd_cargo, ds_email, nm_funcionario):
     cursorAndConnection = getCursorAndConnection()
@@ -78,3 +76,36 @@ def createFuncionario(cd_depto, cd_cargo, ds_email, nm_funcionario):
         connection.close()
 
         return {'cd_funcionario': -1}
+
+
+@router.delete('/deletefuncionario/{cd_funcionario}')
+def deleteFuncionario(cd_funcionario):
+    cursorAndConnection = getCursorAndConnection()
+    cursor = cursorAndConnection[0]
+    connection = cursorAndConnection[1]
+
+    result = False
+
+    try:
+        print('Deleting Funcionario')
+
+        cursor.execute("DELETE FROM FUNCIONARIO WHERE CD_FUNCIONARIO = :cd_funcionario", {'cd_funcionario': cd_funcionario})
+
+        if cursor.rowcount != 0:
+            result = True
+
+        connection.commit()
+
+        cursor.close()
+        connection.close()
+
+        return {'result': result}
+
+
+    except Exception as e:
+        print(e)
+
+        cursor.close()
+        connection.close()
+
+        return {'result': False}
