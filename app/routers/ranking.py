@@ -13,13 +13,15 @@ def getRanking():
         print("Getting Ranking")
 
         cursor.execute(
-            "SELECT f.nm_funcionario "
+            "SELECT f.nm_funcionario, f.nr_pontos "
             "FROM funcionario f "
+            "ORDER BY f.nr_pontos DESC "
             "FETCH FIRST 10 ROWS ONLY "
         )
         funcionario = [
             {
-            'nm_funcionario': row[0]
+                'nm_funcionario': row[0],
+                'nr_pontos': row[1]
             }
         for row in cursor.fetchall()
         ]
