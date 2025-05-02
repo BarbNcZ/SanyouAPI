@@ -5,6 +5,7 @@ from app.routers import tiposTarefa
 from app.routers import departamentos
 from app.routers import cargos
 from app.routers import login
+from app.routers import charts
 
 # Core
 app = FastAPI()
@@ -18,6 +19,8 @@ app.include_router(departamentos.router)
 app.include_router(cargos.router)
 
 app.include_router(login.router)
+
+app.include_router(charts.router)
 
 # Main
 if __name__ == "__main__":
