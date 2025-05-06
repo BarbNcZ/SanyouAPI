@@ -23,7 +23,8 @@ def getFuncionarios():
             'cd_funcionario': row[0],
             'nm_depto': row[1],
             'ds_cargo': row[2],
-            'nm_funcionario': row[3]
+            'nm_funcionario': row[3],
+            'nr_pontos': None
             }
         for row in cursor.fetchall()
         ]
