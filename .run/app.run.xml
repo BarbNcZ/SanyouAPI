@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="app" type="Python.FastAPI">
-    <option name="file" value="C:\Users\Niemietz\PycharmProjects\APIServer_Challange\main.py" />
+    <option name="file" value="main.py" />
     <module name="APIServer_Challange" />
     <option name="ENV_FILES" value="" />
     <option name="INTERPRETER_OPTIONS" value="" />
